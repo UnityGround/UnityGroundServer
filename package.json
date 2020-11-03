@@ -1,6 +1,22 @@
 {
-  "name": "UnityGround",
+  "name": "unityground",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UnityGround/UnityGround.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/UnityGround/UnityGround/issues"
+  },
+  "homepage": "https://github.com/UnityGround/UnityGround#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
