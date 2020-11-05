@@ -3,6 +3,10 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+
+var bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended : false }));
+
 app.get('/', (req, res) => {
   res.send('이것은 게임 서버입니다.');
 });
@@ -18,6 +22,14 @@ app.get('/database', (req, res) => {
         });
       });
       res.end();
+});
+
+app.post('/database1', (req, res) => {
+  var uId = req.body;
+  console.log(uId);
+  res.json({
+    "uId": uId
+  });
 });
 
 app.listen(port, () => {
