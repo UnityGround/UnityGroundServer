@@ -28,6 +28,7 @@ app.post('/database1', (req, res) => {
   var uId = req.body;
   console.log(uId);
   res.json({
+    "code":200,
     "uId": uId
   });
 });
