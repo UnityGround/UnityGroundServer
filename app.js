@@ -46,7 +46,10 @@ app.post('/user/add', (req, res) => {
         });
       });
   } else {
-    //값이 다 들어오지 않은 경우
+    res.status(400).json({
+          'status': 400,
+          'msg': '값이 부족합니다.'
+        });
   }
 });
 
@@ -58,10 +61,6 @@ app.get('/rank', (req, res) => {
     return res.json(results);
   });
 });
-
-
-
-
 
 
 app.listen(port, () => {
