@@ -10,7 +10,7 @@ const conn = mysql.createConnection({
   database : 'UnityGround'
 });
 const cors = require('cors');
-let User = require('./model/user');
+let User = require('./model/info');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({
 
 
 app.get('/', (req, res) => {
-  conn.query(`select * from User`, function(error, results, fields) {
+  conn.query(`select * from user_info`, function(error, results, fields) {
     if(error) {
       console.log(error);
     }
@@ -27,14 +27,15 @@ app.get('/', (req, res) => {
   });
 });
 
-app.post('/user/add', (req, res) => {
-  User.nickname = req.body.nickname;
-  User.age = req.body.age;
-  User.kill = req.body.kill;
+//info add
+app.post('/infoadd', (req, res) => {
+  let score = User.score = req.body.score;
+  let user_kill = User.user_kill = req.body.user_kill;
+  let time_user = User.time_user = req.body.time_user;
   console.log(User);
 
-  if(User.nickname && User.age && User.kill) {
-    conn.query(`INSERT INTO User VALUES ("${User.nickname }", ${User.age}, ${User.kill})`,
+  if(score && user_kill) {
+    conn.query(`INSERT INTO user_info(score, user_kill, time_user) VALUES (${score}, ${user_kill}, ${time_user});`,
       function(error, results, fields){
         if(error) {
           console.log(error);
@@ -53,14 +54,39 @@ app.post('/user/add', (req, res) => {
   }
 });
 
-app.get('/rank', (req, res) => {
-  conn.query(`select Nickname, sum(user_kill) as 'aa' from User group by Nickname order by aa DESC, nickname ASC;`, function(error, results, fields) {
-    if(error) {
+
+//총 스코어
+app.get('/score', function(req, res){
+  conn.query(`select SUM(score) as '총 스코어' from user_info;`, 
+  function(error, results, fields){
+    if(error){
       console.log(error);
     }
-    return res.json(results);
+    res.status(200).json({
+      "code": 200,
+      'msg': 'success',
+      "총 스코어": results
+    });
   });
 });
+
+
+//총 스코어
+app.get('/user_kill', function(req, res){
+  conn.query(`select SUM(user_kill) as '총 킬' from user_info;`, 
+  function(error, results, fields){
+    if(error){
+      console.log(error);
+    }
+    res.status(200).json({
+      "code": 200,
+      'msg': 'success',
+      "총 킬": results
+    });
+  });
+});
+
+
 
 
 app.listen(port, () => {
