@@ -22,6 +22,7 @@ app.get('/', (req, res) => {
 
 //info add
 app.post('/infoadd', (req, res) => {
+
     let score = User.score = req.body.score || req.query.score;
     let user_kill = User.user_kill = req.body.user_kill || req.query.user_kill;
     let time_user = User.time_user = req.body.time_user || req.query.time_user;
@@ -79,5 +80,16 @@ app.post('/infoadd', (req, res) => {
     });
   });
 
+
+// 헤더 값 받아오기
+app.post('/head', function(req, res){
+    let userid = req.get('userid');
+    console.log(userid);
+});
+
+
+app.post('/register', function(req, res){
+
+});
 
 module.exports = app;
