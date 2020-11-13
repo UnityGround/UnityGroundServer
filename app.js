@@ -18,7 +18,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-
 app.get('/', (req, res) => {
     conn.query(`select * from user_info`, function(error, results, fields) {
       if(error) {
