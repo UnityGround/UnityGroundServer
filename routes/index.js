@@ -11,14 +11,45 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.get('/', (req, res) => {
-    conn.query(`select * from user_info`, function(error, results, fields) {
-      if(error) {
-        console.log(error);
-      }
-      return res.json(results);
+//회원가입
+app.post('/register', function(req, res){
+    let userid = req.body.userid || req.query.userid;
+    let passwd = req.body.passwd || req.query.passwd;
+
+    conn.query(`insert`, function(error, results, fields){
+        if(error) {
+            console.log(error);
+        }
+        res.json({
+            //성공 메시지
+        });
     });
-  });
+});
+
+//로그인
+app.post('/login', function(req, res){
+    let userid = req.body.userid || req.query.userid;
+    let passwd = req.body.passwd || req.query.passwd;
+
+    conn.query(`아이디 찾기`, function(error, results, fields){
+        if(error){
+            console.log(error);
+        }
+        else {
+            conn.query(`비밀번호 찾기`, function(error, results, fields){
+                if(error){
+                    console.log(error);
+                }
+                res.json({
+                    //성공 메세지
+                });
+            });
+        }
+    });
+});
+
+
+
 
 //info add
 app.post('/infoadd', (req, res) => {
@@ -81,15 +112,24 @@ app.post('/infoadd', (req, res) => {
   });
 
 
+
+
+
+
+//모든 정보 찾기
+app.get('/', (req, res) => {
+    conn.query(`select * from user_info`, function(error, results, fields) {
+      if(error) {
+        console.log(error);
+      }
+      return res.json(results);
+    });
+});
+
 // 헤더 값 받아오기
 app.post('/head', function(req, res){
     let userid = req.get('userid');
     console.log(userid);
-});
-
-
-app.post('/register', function(req, res){
-
 });
 
 module.exports = app;
