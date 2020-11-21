@@ -132,17 +132,36 @@ app.post('/infoadd', (req, res) => {
 
 
 
+//유저 별 순위 (스코어)
+app.get('/user_rank_score', function(req, res){
+  conn.query(`select userid, SUM(user_score) as 'kill' from info_table group by userid`,
+  function(error, results, fields){
+    if(error){
+      console.log(error);
+    }
+    res.status(200).json({
+      "code": 200,
+      'msg': 'success',
+      results
+    });
+  });
+});
 
+//유저 별 순위 (킬)
+app.get('/user_rank_kill', function(req, res){
+  let i = 0;
+  conn.query(`select userid, SUM(user_kill) as 'kill' from info_table group by userid`, 
+  function(error, results, fields){
+    if(error){
+      console.log(error);
+    }
+    res.status(200).json({
+      "code": 200,
+      'msg': 'success',
+      results
+    });
+  });
+});
 
-
-// //모든 정보 찾기
-// app.get('/', (req, res) => {
-//     conn.query(`select * from user_info`, function(error, results, fields) {
-//       if(error) {
-//         console.log(error);
-//       }
-//       return res.json(results);
-//     });
-// });
 
 module.exports = app;
