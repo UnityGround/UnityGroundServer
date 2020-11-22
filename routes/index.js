@@ -31,7 +31,7 @@ app.post('/register', function(req, res){
             }
         });
     });
-});
+}); 
 
 
 //로그인
@@ -44,14 +44,24 @@ app.post('/login', function(req, res){
             console.log(error);
         }
         if(!results[0]){
-          console.log("아이디 틀림");
+          res.status(200).json({
+            'status': 400,
+            'msg': '아이디 불일치'
+          });
         }
         else {
           if(passwd == results[0]['password']){
-            console.log("로그인 성공");
+            res.status(200).json({
+              'status': 200,
+              'msg': 'success',
+              'user': results
+            });
           }
           else {
-            console.log("비밀번호 틀림");
+            res.status(200).json({
+              'status': 400,
+              'msg': '비밀번호 불일치'
+            });
           }
         }
     });
@@ -134,7 +144,7 @@ app.post('/infoadd', (req, res) => {
 
 //유저 별 순위 (스코어)
 app.get('/user_rank_score', function(req, res){
-  conn.query(`select userid, SUM(user_score) as 'kill' from info_table group by userid`,
+  conn.query(`select userid, SUM(user_score) as 'user_score' from info_table group by userid`,
   function(error, results, fields){
     if(error){
       console.log(error);
@@ -144,13 +154,14 @@ app.get('/user_rank_score', function(req, res){
       'msg': 'success',
       results
     });
+    res.end();
   });
 });
 
 //유저 별 순위 (킬)
 app.get('/user_rank_kill', function(req, res){
   let i = 0;
-  conn.query(`select userid, SUM(user_kill) as 'kill' from info_table group by userid`, 
+  conn.query(`select userid, SUM(user_kill) as 'user_kill' from info_table group by userid`, 
   function(error, results, fields){
     if(error){
       console.log(error);
