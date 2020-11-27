@@ -144,7 +144,7 @@ app.post('/infoadd', (req, res) => {
 
 //유저 별 순위 (스코어)
 app.get('/user_rank_score', function(req, res){
-  conn.query(`select userid, SUM(user_score) as 'user_score' from info_table group by userid`,
+  conn.query(`select userid, SUM(user_score) as 'user_score' from info_table group by userid order by user_score DESC, userid ASC`,
   function(error, results, fields){
     if(error){
       console.log(error);
@@ -165,7 +165,7 @@ app.get('/user_rank_score', function(req, res){
 
 //유저 별 순위 (킬)
 app.get('/user_rank_kill', function(req, res){
-  conn.query(`select userid, SUM(user_kill) as 'user_kill' from info_table group by userid`, 
+  conn.query(`select userid, SUM(user_kill) as 'user_kill' from info_table group by userid order by user_score DESC, userid ASC`, 
   function(error, results, fields){
     if(error){
       console.log(error);
