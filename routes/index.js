@@ -149,12 +149,17 @@ app.get('/user_rank_score', function(req, res){
     if(error){
       console.log(error);
     }
-    res.status(200).json({
-      "code": 200,
-      'msg': 'success',
-      results
+    conn.query(`select COUNT(DISTINCT userid) as 'count' from info_table;`, function(err, rows, fields){
+      if(err){
+        console.log(err);
+      }
+      res.status(200).json({
+        "code": 200,
+        'msg': 'success',
+        'count': rows[0].count,
+        results
+      });
     });
-    res.end();
   });
 });
 
@@ -178,19 +183,5 @@ app.get('/user_rank_kill', function(req, res){
     });
   });
 });
-
-
-//전체 유저 수 구하기
-function aaa(){
-  var num = 0;
-  console.log("aaa함수 실행");
-  conn.query(`select COUNT(*) as 'count' from info_table`, function(err, rows, fields){
-    if(err){
-      console.log(err);
-    }
-    num = rows[0].count;
-    return num;
-  });
-}
 
 module.exports = app;
