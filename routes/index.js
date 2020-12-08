@@ -19,17 +19,28 @@ app.post('/register', function(req, res){
     let passwd = req.body.passwd || req.query.passwd;
     let param = [userid, passwd];
 
-    conn.query(`INSERT INTO user_table(userid, password) VALUES (?, ?);`, param, function(error, results, fields){
-        if(error) {
-            console.log(error);
-        }
-        res.json({
-            "code": 200,
-            "user": {
-              "userid": userid,
-              "passwd": passwd
-            }
+    conn.query(`select userid from user_table where userid = ?`, [userid], function(err, rows, fields){
+      if(err) console.log(err);
+
+      if(!rows[0]){
+        conn.query(`INSERT INTO user_table(userid, password) VALUES (?, ?);`, param, function(err, rows, fields){
+          if(err) console.log(err);
+          else {
+            res.json({
+              "code": 200,
+              "user": {
+                "userid": userid,
+                "passwd": passwd
+              }
+            });
+          }
         });
+      } else {
+        res.json({
+          "code": 300,
+          "msg": "아이디 중복"
+        });
+      }
     });
 }); 
 
