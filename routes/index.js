@@ -28,6 +28,7 @@ app.post('/register', function(req, res){
           else {
             res.json({
               "code": 200,
+              "pass": true,
               "user": {
                 "userid": userid,
                 "passwd": passwd
@@ -38,7 +39,7 @@ app.post('/register', function(req, res){
       } else {
         res.json({
           "code": 300,
-          "msg": "아이디 중복"
+          "psss": false 
         });
       }
     });
