@@ -8,6 +8,7 @@ var dbOption = dbconfig;
 var conn = mysql.createConnection(dbOption);
 conn.query('USE ' + dbconfig.database);
 
+app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
@@ -154,7 +155,7 @@ app.post('/infoadd', (req, res) => {
 
 
 
-//유저 별 순위 (스코어)
+//유저 별 순위 (스코어) 
 app.get('/user_rank_score', function(req, res){
   conn.query(`select userid, SUM(user_score) as 'user_score' from info_table group by userid order by user_score DESC, userid ASC`,
   function(error, results, fields){
@@ -195,5 +196,11 @@ app.get('/user_rank_kill', function(req, res){
     });
   });
 });
+
+app.get('/kill_lank', function(req, res){
+  res.render('/views/lank_kill');
+})
+
+
 
 module.exports = app;
